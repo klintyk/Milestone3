@@ -12,7 +12,7 @@ const knex = require("knex")({
     host: "milestone-3-db.cnv3icnq9rkh.us-east-2.rds.amazonaws.com",
     user: "admin",
     password: "password",
-    database: "milestone-3",
+    database: "burger-joints",
     port: 3306,
   },
 });

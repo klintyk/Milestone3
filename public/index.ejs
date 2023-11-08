@@ -73,37 +73,36 @@
     <script>
       $(document).ready(function () {
         $("button").click(function () {
-          const location = $("#citySelector").val();
-          $.get(`/joints?location=${location}`, function (data) {
-            let html =
-              "<h2 class='mb-4'>Burger Joints in " + location + "</h2>";
+          const city = $("#citySelector").val(); // Use city instead of location
+          $.get(`/joints?location=${city}`, function (data) {
+            // Append city to the query string
+            let html = "<h2 class='mb-4'>Burger Joints in " + city + "</h2>";
             html += '<div class="row">'; // Start a new row
 
             data.forEach((joint) => {
-              html += '<div class="col-lg-3 col-md-6 mb-4">'; // For large devices 3 columns, for medium devices 6 columns
-              html += '<div class="card">'; // Start a new card
+              html += '<div class="col-lg-3 col-md-6 mb-4">';
+              html += '<div class="card">';
 
-              // Image container with a set size, overflow hidden, and centered within the card
               html +=
                 '<div style="width:200px; height:200px; overflow:hidden; position:relative; margin: auto;">';
-              // Image centered both horizontally and vertically within the container
               html +=
                 '<img class="img-fluid" src="' +
                 joint.picture +
                 '" alt="Joint picture" style="max-width:100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">';
-              html += "</div>"; // Close image container
+              html += "</div>";
 
               html += '<div class="card-body">';
-              html += '<h5 class="card-title">' + joint.name + "</h5>"; // Card title
-              html += '<p class="card-text">City: ' + joint.location + "</p>"; // Card text for City
-              // html += '<p class="card-text">Address: ' + joint.Address + "</p>"; // Card text for Address
-              html += "</div>"; // Close card body
-              html += "</div>"; // Close card
-              html += "</div>"; // Close column
+              html += '<h5 class="card-title">' + joint.name + "</h5>";
+              html += '<p class="card-text">City: ' + joint.location + "</p>";
+              // Uncomment and adjust if you have an address field
+              // html += '<p class="card-text">Address: ' + joint.address + "</p>"; // Make sure the field name matches your data
+              html += "</div>";
+              html += "</div>";
+              html += "</div>";
             });
+
             html += "</div>"; // Close row
 
-            // Update the #jointsList div with the results
             $("#jointsList").html(html);
           });
         });
