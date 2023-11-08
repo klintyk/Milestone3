@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burger Joints by City: Milestone 3</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <header class="bg-dark text-white">
+      <div class="py-3 text-center text-white border-bottom">
+        <a href="/" class="d-inline-block">
+          <img
+            class="img-fluid"
+            src="https://cdn.icon-icons.com/icons2/1874/PNG/512/iconfinder-hamburgerfastfoodfastfoodburgerfoodbread-4306476_119931.png"
+            alt="Burger Joint Logo"
+            style="width: 100px; height: auto"
+          />
+        </a>
+      </div>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mx-auto">
+              <li class="nav-item mx-2">
+                <a href="/" class="nav-link">Home</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container mt-5">
+      <div class="card bg-light">
+        <div class="card-header">
+          <h1>FIND NEARBY BURGER JOINTS</h1>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Select a location:</h5>
+          <select id="citySelector" class="form-control mb-3">
+            <% cities.forEach(function(location) { %>
+            <option value="<%= location %>"><%= location %></option>
+            <% }); %>
+          </select>
+
+          <button class="btn btn-primary mb-3">Find Joints</button>
+          <div id="jointsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("button").click(function () {
+          const location = $("#citySelector").val();
+          $.get(`/joints?location=${location}`, function (data) {
+            let html =
+              "<h2 class='mb-4'>Burger Joints in " + location + "</h2>";
+            html += '<div class="row">'; // Start a new row
+
+            data.forEach((joint) => {
+              html += '<div class="col-lg-3 col-md-6 mb-4">'; // For large devices 3 columns, for medium devices 6 columns
+              html += '<div class="card">'; // Start a new card
+
+              // Image container with a set size, overflow hidden, and centered within the card
+              html +=
+                '<div style="width:200px; height:200px; overflow:hidden; position:relative; margin: auto;">';
+              // Image centered both horizontally and vertically within the container
+              html +=
+                '<img class="img-fluid" src="' +
+                joint.picture +
+                '" alt="Joint picture" style="max-width:100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">';
+              html += "</div>"; // Close image container
+
+              html += '<div class="card-body">';
+              html += '<h5 class="card-title">' + joint.name + "</h5>"; // Card title
+              html += '<p class="card-text">City: ' + joint.location + "</p>"; // Card text for City
+              // html += '<p class="card-text">Address: ' + joint.Address + "</p>"; // Card text for Address
+              html += "</div>"; // Close card body
+              html += "</div>"; // Close card
+              html += "</div>"; // Close column
+            });
+            html += "</div>"; // Close row
+
+            // Update the #jointsList div with the results
+            $("#jointsList").html(html);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
